@@ -1,11 +1,6 @@
 clc, clear, close all
 % Valve opening percentage
 valve_pct = 0;
-% Perturbation flag toggled by keypress
-perturbation = 0;
-perturb_fig = figure('Name','Toggle perturbation (press any key)', ...
-    'KeyPressFcn',@(src,evt) set(src,'UserData',1 - get(src,'UserData')), ...
-    'UserData',0);
 % Setpoint and timing configuration
 setpoints = 10:5:90; % desired levels in percent
 num_setpoints = length(setpoints);
@@ -25,8 +20,8 @@ error_hist = [0, 0, 0];  % Error history
 control_hist = [0,0];    % Control history
 previous_level = 0;      % Simple fault detector placeholder
 is_real_measurement = 1;
-% Initialize storage variables (adds perturbation column)
-data_log=zeros(n,12);
+% Initialize storage variables
+data_log=zeros(n,11);
 timestamps = datetime.empty(n, 0);
 % Initialize DAQ
 DAQ_Start;
@@ -97,13 +92,11 @@ for i=1:num_setpoints % for each setpoint
         control_hist = [control_hist(2:end), u_new];
         % Output generation
         DAQ_Write (u_new,Output_1);
-        % Read perturbation flag from figure (0/1)
-        perturbation = get(perturb_fig,'UserData');
         % Store values
         a1 = den(2);  % Coefficient a1
         a2 = den(3);  % Coefficient a2
         b1 = num;     % Coefficient b1 (numerator)
-        data_log(sample_idx,:)=[valve_pct,current_level,u_new,current_setpoint,current_error,Kp,Ki,Kd, b1, a1, a2, perturbation];
+        data_log(sample_idx,:)=[valve_pct,current_level,u_new,current_setpoint,current_error,Kp,Ki,Kd, b1, a1, a2];
         timestamps(sample_idx)=current_timestamp;
         % Timing control
         if((toc-initial_time)>Sample_Time)
@@ -117,14 +110,13 @@ for i=1:num_setpoints % for each setpoint
 end
 % Stop DAQ
 DAQ_Stop;
-if isvalid(perturb_fig), close(perturb_fig); end
 % Save to CSV
 % Convert timestamps to strings
 timestamp_strs = cellstr(datestr(timestamps, 'yyyy-mm-dd HH:MM:SS'));
 
 % Create table with strings instead of datetime
-table_data = table(timestamp_strs, data_log(:,1), data_log(:,2), data_log(:,3), data_log(:,4), data_log(:,5), data_log(:,6), data_log(:,7), data_log(:,8), data_log(:,9), data_log(:,10), data_log(:,11), data_log(:,12), ...
-    'VariableNames', {'Timestamp','Valve_Closure_pct','Level_pct','Control_Signal_pct','Setpoint_pct','Error_pct','Kp','Ki','Kd','b1','a1','a2','perturbation'});
+table_data = table(timestamp_strs, data_log(:,1), data_log(:,2), data_log(:,3), data_log(:,4), data_log(:,5), data_log(:,6), data_log(:,7), data_log(:,8), data_log(:,9), data_log(:,10), data_log(:,11), ...
+    'VariableNames', {'Timestamp','Valve_Closure_pct','Level_pct','Control_Signal_pct','Setpoint_pct','Error_pct','Kp','Ki','Kd','b1','a1','a2'});
 
 % Save CSV
 csv_filename = sprintf('PassiveOutflow_%.0fpct.csv', valve_pct);
