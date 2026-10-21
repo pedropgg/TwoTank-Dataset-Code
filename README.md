@@ -30,7 +30,8 @@ pip install -r requirements.txt
 cd Python_Validation
 python eda.py path/to/Dataset Baseline
 python eda.py path/to/Dataset Disturbance --pattern "Disturbance_LowOutflow_*"
-python ocsvm_anomaly.py path/to/Dataset
+python ocsvm_anomaly.py path/to/Dataset               # reproduces Table 11 of the paper
+python ocsvm_anomaly.py path/to/Dataset --window 120  # rolling-window features
 ```
 
 ## Control loop summary
@@ -45,12 +46,21 @@ Note the **two-sample input delay** of the identified model; Eq. (1) of the pape
   `Arduino Firmware/` is a reference re-implementation of the protocol expected by `DAQ_Read.m` / `DAQ_Write.m`
   (command 136: send two 8-bit analog readings; command 65 + 2 bytes: set two PWM outputs). Pin assignments
   and PWM frequency are assumptions, and it has not yet been compiled or tested on the plant.
-- **Anomaly detection.** The original One-Class SVM code is not available, and the paper does not report its
-  feature set or hyperparameters. `ocsvm_anomaly.py` re-implements the experiment as described (train on the
-  10 Baseline runs, test on the LowOutflow 50 % run, ground truth = `perturbation`). With the configurations
-  tested so far, anomaly recall is 0.17–0.55 and accuracy 0.85–0.93, well below Table 11 of the paper
-  (accuracy 0.98, recall 1.00). The controller rejects the disturbance quickly, so it leaves only a small
-  signature (a few points of extra pump effort) in the signals.
+- **Anomaly detection.** The original One-Class SVM code is not available. `ocsvm_anomaly.py` re-implements
+  the experiment: train on the 10 Baseline runs, test on one outflow-increase run, ground truth = `perturbation`.
+  The paper's test run is `Disturbance_LowOutflow_40pct.csv` in dataset v2 (electrovalve opening 40 %). Its
+  3616 disturbance samples match Table 11. The paper calls it the "50 %" run because the validation notebooks
+  subtracted 10 from the logged closure (60 %). On that run the paper's result is reproduced:
+
+  | Configuration | Accuracy | Anomaly precision | Anomaly recall |
+  |---|---|---|---|
+  | Paper (Table 11) | 0.98 | 0.85 | 1.00 |
+  | Process signals, ν = 0.01 (default) | 0.990 | 0.925 | 0.997 |
+  | Rolling mean/std, 120 s window (`--window 120`) | 0.983 | 0.878 | 0.996 |
+
+  On the other outflow-increase run (`--test-file Disturbance_LowOutflow_50pct.csv`), recall stays below 0.55
+  for every configuration tried, with or without rolling windows. The controller rejects that disturbance
+  quickly, so it leaves only a small signature in the signals. Results vary slightly with `--seed`.
 - `MATLAB_Control` uses the legacy `serial` interface, which recent MATLAB releases replace with `serialport`.
 
 ## Changes in this version
