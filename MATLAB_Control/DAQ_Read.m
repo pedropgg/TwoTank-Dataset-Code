@@ -9,10 +9,10 @@ Comando=uint8(136); % We command the Arduino to send the values of the
 fwrite(Arduino_COM,Comando,'uchar');
 
 Channel_0=fscanf(Arduino_COM,'%d');
-% Arduino reading range is 0@1023, them the measure is scaled to 0@100
+% The firmware sends 8-bit values (0-255); scale to 0-100 %
 Channel_0=100*Channel_0/255;
 Channel_1=fscanf(Arduino_COM,'%d');
-% Arduino reading range is 0@1023, them the measure is scaled to 0@100
+% The firmware sends 8-bit values (0-255); scale to 0-100 %
 Channel_1=100*Channel_1/255;
 
 end

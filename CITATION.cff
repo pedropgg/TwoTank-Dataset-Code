@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: "If you use this code or the dataset, please cite the article below."
+title: "TwoTank-Dataset-Code: acquisition, adaptive control and validation code for the two-tank dataset"
+type: software
+license: MIT
+repository-code: "https://github.com/pedropgg/TwoTank-Dataset-Code"
+authors:
+  - family-names: "Gómez-González"
+    given-names: "Pedro-Pablo"
+  - family-names: "Michelena"
+    given-names: "Álvaro"
+  - family-names: "García Fischer"
+    given-names: "Agustín"
+  - family-names: "Freire-Mahía"
+    given-names: "Noel"
+  - family-names: "Jove"
+    given-names: "Esteban"
+  - family-names: "Calvo-Rolle"
+    given-names: "José Luis"
+references:
+  - type: dataset
+    title: "Two-Tank Water System Dataset for RLS-Based Identification and Adaptive PID Control Under Diverse Operating Conditions"
+    doi: "10.5281/zenodo.17688566"
+    publisher:
+      name: "Zenodo"
+preferred-citation:
+  type: article
+  title: "Multi-scenario datasets for system identification and adaptive control of a nonlinear two tank system"
+  authors:
+    - family-names: "Gómez-González"
+      given-names: "Pedro-Pablo"
+    - family-names: "Michelena"
+      given-names: "Álvaro"
+    - family-names: "García Fischer"
+      given-names: "Agustín"
+    - family-names: "Freire-Mahía"
+      given-names: "Noel"
+    - family-names: "Jove"
+      given-names: "Esteban"
+    - family-names: "Calvo-Rolle"
+      given-names: "José Luis"
+  journal: "Scientific Data"
+  volume: 13
+  start: 1465
+  year: 2026
+  doi: "10.1038/s41597-026-07686-2"
