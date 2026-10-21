@@ -9,7 +9,8 @@ Source code for data acquisition, real-time adaptive control and technical valid
 > *Scientific Data* 13, 1465 (2026). https://doi.org/10.1038/s41597-026-07686-2
 
 The dataset (25 closed-loop runs, 765 000 samples at 1 Hz) is hosted on Zenodo:
-**https://doi.org/10.5281/zenodo.17688566** (all versions). Use **version 2.0**, which corrects the logged
+**https://doi.org/10.5281/zenodo.17688566** (all versions). Use **version 2.0**
+(https://doi.org/10.5281/zenodo.23529910), which corrects the logged
 `Ki`/`Kd` gains and the valve metadata of version 1.0. See the dataset `CHANGELOG.md` and [Changes](#changes-in-this-version).
 
 ## Repository structure

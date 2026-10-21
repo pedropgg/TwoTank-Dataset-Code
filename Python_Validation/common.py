@@ -1,4 +1,4 @@
-"""Shared loader for the v2 dataset (Zenodo 10.5281/zenodo.17688566, version 2.0)."""
+"""Shared loader for the v2 dataset (Zenodo 10.5281/zenodo.23529910, version 2.0)."""
 import glob
 import os
 
