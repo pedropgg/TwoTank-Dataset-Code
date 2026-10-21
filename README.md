@@ -40,6 +40,19 @@ Every second (Ts = 1 s): read level → RLS update of `y(k) = -a1·y(k-1) - a2·
 factor 0.9) → Dahlin PID gains (λ = 3.0) → incremental PID → saturation to [0, 100] % → pump command.
 Note the **two-sample input delay** of the identified model; Eq. (1) of the paper writes `b1·z⁻¹`.
 
+## Differences from the published article
+
+The code and dataset v2 were verified against the raw data. Where they differ from the article:
+
+| Article | Code / dataset v2 |
+|---|---|
+| Eq. (1): `b1·z⁻¹` | The RLS model uses `u(k-2)`: `b1·z⁻²` |
+| `Ki`, `Kd` statistics (Tables 4, 6, 8, 10; "Negative Gain Values") | Computed from v1 columns with Ti and Td swapped. Corrected in v2: Ki is positive, Kd mostly slightly negative |
+| Valve values (closure − 10) | v2 logs closure and opening (`Valve_Opening_pct`) |
+| HighOutflow runs "80 % and 90 %" | Openings 10 % and 100 % (`Disturbance_HighOutflow_10pct`, `_100pct`) |
+| LowOutflow runs "50 % and 60 %" | Openings 50 % and 40 % (`Disturbance_LowOutflow_50pct`, `_40pct`) |
+| OC-SVM test run "Outflow Increase (50 % valve)" | `Disturbance_LowOutflow_40pct` (40 % opening); Table 11 is reproduced on it |
+
 ## Notes and known limitations
 
 - **Firmware.** The firmware used during the 2025 experiments is not available. The sketch in
