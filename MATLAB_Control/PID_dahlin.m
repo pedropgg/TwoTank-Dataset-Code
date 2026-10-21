@@ -1,7 +1,7 @@
 function [u, Kp, Td, Ti] = PID_dahlin(numerator, denominator, errors, u_history, Tm, B)
     % Function to run the Dahlin PID (self-tuning)
     %
-    % Gains are computed from the transfer function coefficients (b0, a0, a1)
+    % Gains are computed from the transfer function coefficients (b1, a1, a2)
     %
     % Arguments:
     %   - numerator: numerator coefficients of the transfer function (double)
